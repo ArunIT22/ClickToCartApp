@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidator } from '../custom-validator';
 
 @Component({
   selector: 'app-user-registration',
@@ -16,11 +17,21 @@ export class UserRegistrationComponent implements OnInit {
     this.userForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
       lastName: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.email], CustomValidator.emailAlreadyExist),
       password: new FormControl('', Validators.required),
-      confirmPassword: new FormControl('', Validators.required),
+      confirmPassword: new FormControl('', [CustomValidator.matchValues('password')]),
       city: new FormControl(this.cities[0].id),
+      skills: new FormArray([
+        new FormControl('', Validators.required),
+        // new FormControl('', Validators.required),
+        // new FormControl('', Validators.required),
+        // new FormControl('', Validators.required),
+      ])
     })
+  }
+
+  addSkill() {
+    (this.userForm.get('skills') as FormArray).push(new FormControl('', Validators.required))
   }
 
   cities = [

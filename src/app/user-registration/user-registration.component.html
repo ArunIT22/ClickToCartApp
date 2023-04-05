@@ -59,6 +59,9 @@
           <small *ngIf="email.errors?.['email']"
             >Please enter valid email id</small
           >
+          <small *ngIf="email.errors?.['emailExist']">
+            Email Id already exists. Please provide another one.
+          </small>
         </div>
       </div>
       <div class="mb-3">
@@ -83,8 +86,15 @@
           placeholder="Confirm Password"
           formControlName="confirmPassword"
         />
-        <div *ngIf="!confirmPassword?.valid && (confirmPassword?.touched || confirmPassword?.dirty)">
-
+        <div
+          *ngIf="
+            !confirmPassword?.valid &&
+            (confirmPassword?.touched || confirmPassword?.dirty)
+          "
+        >
+          <small *ngIf="!confirmPassword.errors?.['isMatching']">
+            Password and Confirm Password doesn't match
+          </small>
         </div>
       </div>
       <div class="mb-3">
@@ -94,6 +104,27 @@
             {{ c.name }}
           </option>
         </select>
+      </div>
+
+      <!-- Dynamic Controls using FormArray -->
+      <div class="mb-3">
+        <label class="form-label">Skills</label>
+        <div formArrayName="skills">
+          <ng-container
+            *ngFor="
+              let skill of userForm.get('skills')['controls'];
+              let i = index
+            "
+          >
+            <input
+              type="text"
+              class="form-control mb-2"
+              placeholder="Add your skills here..."
+              formControlName="{{ i }}"
+            />
+          </ng-container>
+          <button (click)="addSkill()">Add Skill</button>
+        </div>
       </div>
 
       <div class="mt-3">
