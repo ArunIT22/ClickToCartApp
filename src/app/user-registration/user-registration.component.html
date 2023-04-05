@@ -1,7 +1,7 @@
 <div class="row mt-3">
-  <div class="col-lg-5">
+  <div class="col-lg-4 gx-3">
     <h2>User Registration</h2>
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
       <div class="mb-3">
         <label class="form-label">First Name</label>
         <input
@@ -107,7 +107,7 @@
       </div>
 
       <!-- Dynamic Controls using FormArray -->
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label class="form-label">Skills</label>
         <div formArrayName="skills">
           <ng-container
@@ -125,11 +125,43 @@
           </ng-container>
           <button (click)="addSkill()">Add Skill</button>
         </div>
-      </div>
+      </div> -->
 
       <div class="mt-3">
         <button class="btn btn-warning" type="submit">Submit</button>
       </div>
     </form>
+  </div>
+  <div class="col-lg-7">
+    <h2>User Details</h2>
+    <table class="table table-bordered mt-3">
+      <thead class="bg-warning">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email Id</th>
+          <th>Password</th>
+          <th>City</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userDetails">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.password }}</td>
+          <td>{{ user.city }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="onDelete(user.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <button class="btn btn-success" (click)="getUsers()">Get Users</button>
+    </div>
   </div>
 </div>
